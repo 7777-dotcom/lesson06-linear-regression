@@ -55,6 +55,10 @@ y = yearly["연평균기온"].to_numpy(dtype=float)
 slope, intercept = np.polyfit(x, y, 1)
 r = float(np.corrcoef(x, y)[0, 1])
 
+n_years = len(yearly)
+start_year = int(yearly["연도"].min())
+end_year = int(yearly["연도"].max())
+
 # 최근 20년(끝 연도 포함 20개 연도 구간)만으로 구한 회귀
 RECENT_SPAN = 20
 recent_start = end_year - RECENT_SPAN + 1
@@ -64,10 +68,6 @@ if has_recent:
     xr = recent["연도"].to_numpy(dtype=float)
     yr = recent["연평균기온"].to_numpy(dtype=float)
     slope_recent, intercept_recent = np.polyfit(xr, yr, 1)
-
-n_years = len(yearly)
-start_year = int(yearly["연도"].min())
-end_year = int(yearly["연도"].max())
 
 # ---- 슬라이더와 예상 기온 ----
 year = st.slider("예상할 연도", min_value=1900, max_value=2100, value=2050, step=1)
